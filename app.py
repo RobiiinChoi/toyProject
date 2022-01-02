@@ -63,8 +63,8 @@ def write_board_detail():
         'regDate' : date_receive,
         'review' : review_number
     }
-    idx = db.board.insert_one(doc)
-    print(idx)
+    #idx = db.board.insert_one(doc)
+    #print(idx)
 
     return jsonify({'msg':'저장완료'})
 
