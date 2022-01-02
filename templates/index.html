@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Dashboard Template · Bootstrap v5.0</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/dashboard.css" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+    </style>
+    <script>
+
+        $(document).ready(function () {
+            boardList();
+        });
+
+        // $(document).ready(function () {
+        //     pagination()
+        // })
+        $(document).ready(function () {
+            $('input').prop('readonly', true);
+
+        });
+
+        function titleSelected(title) {
+            $.ajax({
+                type: 'POST',
+                url: '/read_detail',
+                data: {title_give: title},
+                success: function (response) {
+                    let writer = response['writer'];
+                    let title = response['title'];
+                    let review = response['review'];
+                    let content = response['content'];
+                    let regDate = response['regDate'];
+                    console.log(regDate)
+                    let temp = regDate.split("-");
+
+                    let temp_tag = `<div class="table-responsive" id="readDetail">
+                <h1 class="h2" style="text-align: center">글읽기</h1>
+                <div id="write_wrap">
+                    <form>
+                        <div class="form-group writing">
+                            <label>작성자</label>
+                            <input type="text" class="form-control" id="writer" value="${writer}">
+                        </div>
+                        <div class="form-group writing">
+                            <label>제목</label>
+
+                            <input type="text" class="form-control" id="title" value="${title}">
+
+                        </div>
+                        <div class="form-group writing">
+                            <label>내용</label>
+                            <textarea class="form-control" id="content" rows="8">${content}</textarea>
+                        </div>
+                        <div class="form-group writing">
+                            <label>날짜</label>
+                            <input type="text" class="form-control" id="writer" value="${temp[0]}-${temp[1]}-${temp[2]}">
+                        </div>
+                        <div class="form-group writing">
+                            <label>조회수</label>
+                            <input type="text" class="form-control" id="writer" value="${review}">
+                        </div>`
+                    $('#main').hide();
+                    $('#readDetail').append(temp_tag)
+
+                }
+
+            });
+        }
+
+
+        function boardList() {
+            $.ajax({
+                type: 'GET',
+                url: '/board',
+                data: {},
+                success: function (response) {
+                    let boards = response['all_boards'];
+                    //alert(boards)
+                    for (let i = 0; i < boards.length; i++) {
+                        let count = boards.length - i
+                        let writer = boards[i]['writer'];
+                        let title = boards[i]['title'];
+                        let review = boards[i]['review'];
+                        let regDate = boards[i]['regDate'];
+
+                        let temp = regDate.split("-");
+
+                        // <td>${count}</td>
+                        let temp_tag = `<tr>
+                                            <td>${count}</td>
+                                            <td onclick="titleSelected(title)">${title}</td>
+                                            <td>${writer}</td>
+                                            <td>${temp[0]}-${temp[1]}-${temp[2]}</td>
+                                            <td>${review}</td>
+                                        </tr>`
+                        $('#boardTable').append(temp_tag)
+                    }
+
+                }
+            });
+
+        }
+
+        // function pagination() {
+        //
+        // }
+
+    </script>
+
+    <!-- Custom styles for this template -->
+
+</head>
+<body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">항해99 29조</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!--    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" href="#">로그인</a>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a class="nav-link" href="#">-->
+                    <!--                            <span data-feather="file"></span>-->
+                    <!--                            Orders-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a class="nav-link" href="#">-->
+                    <!--                            <span data-feather="shopping-cart"></span>-->
+                    <!--                            Products-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a class="nav-link" href="#">-->
+                    <!--                            <span data-feather="users"></span>-->
+                    <!--                            Customers-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a class="nav-link" href="#">-->
+                    <!--                            <span data-feather="bar-chart-2"></span>-->
+                    <!--                            Reports-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a class="nav-link" href="#">-->
+                    <!--                            <span data-feather="layers"></span>-->
+                    <!--                            Integrations-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                </ul>
+
+                <!--                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">-->
+                <!--                    <span>Saved reports</span>-->
+                <!--                    <a class="link-secondary" href="#" aria-label="Add a new report">-->
+                <!--                        <span data-feather="plus-circle"></span>-->
+                <!--                    </a>-->
+                <!--                </h6>-->
+                <!--                <ul class="nav flex-column mb-2">-->
+                <!--                    <li class="nav-item">-->
+                <!--                        <a class="nav-link" href="#">-->
+                <!--                            <span data-feather="file-text"></span>-->
+                <!--                            Current month-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                    <li class="nav-item">-->
+                <!--                        <a class="nav-link" href="#">-->
+                <!--                            <span data-feather="file-text"></span>-->
+                <!--                            Last quarter-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                    <li class="nav-item">-->
+                <!--                        <a class="nav-link" href="#">-->
+                <!--                            <span data-feather="file-text"></span>-->
+                <!--                            Social engagement-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                    <li class="nav-item">-->
+                <!--                        <a class="nav-link" href="#">-->
+                <!--                            <span data-feather="file-text"></span>-->
+                <!--                            Year-end sale-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                </ul>-->
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">커뮤니티 사이트</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+
+                    <div class="btn-group me-2">
+                        <!--                                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>-->
+                        <a href="/create">
+                            <button type="button" class="btn btn-sm btn-primary">글쓰기</button>
+                        </a>
+                    </div>
+
+                    <!--                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">-->
+                    <!--                        <span data-feather="calendar"></span>-->
+                    <!--                        This week-->
+                    <!--                    </button>-->
+                </div>
+            </div>
+
+            <!--            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>-->
+
+
+            <div class="table-responsive" id="main">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">날짜</th>
+                        <th scope="col">조회</th>
+                    </tr>
+                    </thead>
+                    <tbody id="boardTable">
+                    <!--                    <tr>-->
+
+                    <!--                        <td>1213</td>-->
+                    <!--                        <td>142</td>-->
+                    <!--                        <td>23123</td>-->
+                    <!--                        <td>1</td>-->
+                    <!--                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="../static/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+        crossorigin="anonymous"></script>
+<script src="../static/js/dashboard.js"></script>
+</body>
+</html>
