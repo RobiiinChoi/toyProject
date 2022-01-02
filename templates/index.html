@@ -43,54 +43,6 @@
 
         });
 
-        function titleSelected(title) {
-            $.ajax({
-                type: 'POST',
-                url: '/read_detail',
-                data: {title_give: title},
-                success: function (response) {
-                    let writer = response['writer'];
-                    let title = response['title'];
-                    let review = response['review'];
-                    let content = response['content'];
-                    let regDate = response['regDate'];
-                    console.log(regDate)
-                    let temp = regDate.split("-");
-
-                    let temp_tag = `<div class="table-responsive" id="readDetail">
-                <h1 class="h2" style="text-align: center">글읽기</h1>
-                <div id="write_wrap">
-                    <form>
-                        <div class="form-group writing">
-                            <label>작성자</label>
-                            <input type="text" class="form-control" id="writer" value="${writer}">
-                        </div>
-                        <div class="form-group writing">
-                            <label>제목</label>
-
-                            <input type="text" class="form-control" id="title" value="${title}">
-
-                        </div>
-                        <div class="form-group writing">
-                            <label>내용</label>
-                            <textarea class="form-control" id="content" rows="8">${content}</textarea>
-                        </div>
-                        <div class="form-group writing">
-                            <label>날짜</label>
-                            <input type="text" class="form-control" id="writer" value="${temp[0]}-${temp[1]}-${temp[2]}">
-                        </div>
-                        <div class="form-group writing">
-                            <label>조회수</label>
-                            <input type="text" class="form-control" id="writer" value="${review}">
-                        </div>`
-                    $('#main').hide();
-                    $('#readDetail').append(temp_tag)
-
-                }
-
-            });
-        }
-
 
         function boardList() {
             $.ajax({
@@ -106,23 +58,80 @@
                         let title = boards[i]['title'];
                         let review = boards[i]['review'];
                         let regDate = boards[i]['regDate'];
+                        //let id = boards[i]['_id'];
 
-                        let temp = regDate.split("-");
+                        let temp = regDate.split('-');
 
                         // <td>${count}</td>
                         let temp_tag = `<tr>
                                             <td>${count}</td>
-                                            <td onclick="titleSelected(title)">${title}</td>
+                                            <td onclick="titleSelected('${title}')">${title}</td>
                                             <td>${writer}</td>
                                             <td>${temp[0]}-${temp[1]}-${temp[2]}</td>
                                             <td>${review}</td>
                                         </tr>`
                         $('#boardTable').append(temp_tag)
+
                     }
 
                 }
             });
 
+        }
+
+        function titleSelected(title_id) {
+            console.log(title_id)
+            $.ajax({
+                type: 'POST',
+                url: '/detail_selected',
+                data: {title_board_give: title_board},
+                success: function (response) {
+            //         console.log(detailBoard)
+            //         let detailBoard = response['detail_board'];
+            //
+            //         let writer = detailBoard['writer'];
+            //         let title = title_board
+            //         let review = detailBoard['review'];
+            //         let regDate = detailBoard['regDate'];
+            //         let content = detailBoard['content'];
+            //
+            //         let temp_html = `<div class="table-responsive">
+            //     <h1 class="h2" style="text-align: center">글읽기</h1>
+            //     <div id="write_wrap">
+            //
+            //             <div class="form-group writing">
+            //                 <label>작성자</label>
+            //                 <input type="text" class="form-control" id="writer">
+            //             </div>
+            //             <div class="form-group writing">
+            //                 <label>제목</label>
+            //                 <input type="text" class="form-control" id="title"
+            //                 >
+            //             </div>
+            //             <div class="form-group writing">
+            //                 <label>내용</label>
+            //                 <textarea class="form-control" id="content" rows="8"></textarea>
+            //             </div>
+            //             <div class="form-group writing">
+            //                 <label>날짜</label>
+            //                 <input type="text" class="form-control" id="writer">
+            //             </div>
+            //             <div class="form-group writing">
+            //                 <label>조회수</label>
+            //                 <input type="text" class="form-control" id="writer">
+            //             </div>
+            //             <a href="/board">
+            //             <button onclick="back()" type="submit" class="btn btn-primary" style="margin-top:15px">
+            //                 목록
+            //             </button>
+            //             </a>
+            //
+            //     </div>
+            // </div>`
+            //         $('#main').append(temp_html);
+                }
+
+            });
         }
 
         // function pagination() {

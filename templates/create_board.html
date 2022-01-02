@@ -66,11 +66,14 @@
                 url: '/write',
                 data: {writer_give: writer, title_give: title, content_give: content, date_give: dateString},
                 success: function (response) {
-                    window.location.href("/board")
-                    // location.href="/board";
+                    //window.location.href("/");
                 }
             });
+            window.location.href("/");
+        }
 
+        function back() {
+            window.history.back();
         }
 
 
@@ -195,32 +198,33 @@
             <div class="table-responsive">
                 <h1 class="h2" style="text-align: center">글쓰기</h1>
                 <div id="write_wrap">
-                    <form>
-                        <div class="form-group writing">
-                            <label>작성자</label>
-                            <input type="text" class="form-control" id="writer"
-                            >
-                        </div>
-                        <div class="form-group writing">
-                            <label>제목</label>
-                            <input type="text" class="form-control" id="title"
-                            >
-                        </div>
-                        <div class="form-group writing">
-                            <label>내용</label>
-                            <textarea class="form-control" id="content" rows="8"></textarea>
-                        </div>
 
-                        <button onclick="writeBoard()" type="submit" class="btn btn-primary" style="margin-top:15px">
+                    <div class="form-group writing">
+                        <label>작성자</label>
+                        <input type="text" class="form-control" id="writer"
+                        >
+                    </div>
+                    <div class="form-group writing">
+                        <label>제목</label>
+                        <input type="text" class="form-control" id="title"
+                        >
+                    </div>
+                    <div class="form-group writing">
+                        <label>내용</label>
+                        <textarea class="form-control" id="content" rows="8"></textarea>
+                    </div>
+                    <a href="/">
+                        <button onclick="writeBoard()" class="btn btn-primary" style="margin-top:15px">
                             등록
                         </button>
-                        <a href="./board">
-                        <button  type="submit" class="btn btn-primary" style="margin-top:15px">
+                    </a>
+
+                        <button class="btn btn-primary" style="margin-top:15px" onclick="back()">
                             취소
                         </button>
-                        </a>
 
-                    </form>
+
+
                 </div>
             </div>
         </main>

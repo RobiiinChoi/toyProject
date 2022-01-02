@@ -19,26 +19,33 @@ def home():
 def create_board():
     return render_template('create_board.html')
 
-#메인페이지 글 리스트 출력
+# 메인페이지 글 리스트 출력
 @app.route('/board')
 def read_list():
     boards= list(db.board.find({},{'_id':False}).sort('regDate', -1))
     #boards = list(db.board.find({},{'_id':False}))
     return jsonify({'all_boards': boards})
 
-
-
-# @app.route('/read_detail', methods=['GET'])
-# def get_detail():
-#     title_receive = request.form['title_give']
-#     db.board.find_one({'title':title_receive},{'_id':False})
+# 상세 페이지
+# @app.route('/detail_selected', methods=['GET'])
+# def read_detail():
+#     #board_one = db.board.find_one({'title': title_board_receive}, {'_id': False})
 #     #boards = list(db.board.find({},{'_id':False}))
-#     return jsonify({'msg':'솔팅 완료'})
+#     return jsonify({'board_one': board_one})
+
+# 게시물 조회 수 증가
+@app.route('/detail_selected', methods = ['POST'])
+def view_up():
+    title_board_receive = request.form['title_board_give']
+    print(title_board_receive)
+    db.board.update_one({'title':title_board_receive},{'$inc':{'review': 1}})
+    #board_one = db.board.find_one({'title': title_board_receive}, {'_id': False})
+    #boards = list(db.board.find({},{'_id':False}))
+    return jsonify({'msg': 'nothing'})
 
 # 글쓰기
 @app.route('/write', methods=['POST'])
 def write_board_detail():
-
     writer_receive = request.form['writer_give']
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
@@ -56,16 +63,11 @@ def write_board_detail():
         'regDate' : date_receive,
         'review' : review_number
     }
-    db.board.insert_one(doc)
+    idx = db.board.insert_one(doc)
+    print(idx)
 
     return jsonify({'msg':'저장완료'})
 
-@app.route('/read_detail', methods=['POST'])
-def board_list():
-    title_receive = request.form['title_give']
-    db.board.find_one({'title':title_receive},{'_id':False})
-    #boards = list(db.board.find({},{'_id':False}))
-    return jsonify({'msg':'솔팅 완료'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
